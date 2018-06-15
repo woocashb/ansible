@@ -1,0 +1,22 @@
+---
+ common:
+ - epel-release
+ - lsof
+ - ntp
+ - net-tools
+ - bind-utils
+ - mc
+ - zsh
+ - strace
+ - htop
+ - psmisc
+ - telnet
+ - wget
+ - util-linux
+ - tcpdump
+ - sysstat
+ - rsync
+ - vim
+ - nmap
+ - nmap-ncat
+ - nethogs

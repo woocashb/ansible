@@ -1,0 +1,10 @@
+---
+ - hosts: ap
+   gather_facts: false
+   tasks:
+   - name: Allow 'wheel' group to have passwordless sudo
+     lineinfile:
+     path: /etc/sudoers
+     state: present
+     regexp: '^%wheel'
+     line: '%wheel ALL=(ALL) NOPASSWD: ALL'

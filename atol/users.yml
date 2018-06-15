@@ -1,0 +1,14 @@
+---
+ - hosts: dostep-jolkos
+   gather_facts: false
+   tasks:
+   - name: mkoziol utworz uzytkownika i przypisz do grupy wheel
+     user: name=mkoziol shell=/usr/bin/bash state=present groups=wheel append=yes
+   - name: mkoziol zmien hasla
+     user: 
+      name: mkoziol
+      update_password: always
+      password: $6$rounds=656000$gL5grvAsjG8XsEMV$udZ99I78GFYeN0Ay4awo17hBdjfi5sy86NOL1mElRh9m0PncVTqUEUeN..wuTflk/5.Lu6xb1trdW19o2fGqo0
+      state: present
+     
+

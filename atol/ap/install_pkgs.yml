@@ -1,0 +1,8 @@
+---
+ - hosts: ap
+   gather_facts: false
+   tasks:
+   - name: deploy jre package
+     copy: src=/home/woocash/ansible/pkg/jre-8u171-linux-x64.rpm dest=/opt/
+   - name: install jre package
+     yum: name=/opt/jre-8u171-linux-x64.rpm state=installed

@@ -1,0 +1,22 @@
+---
+ - hosts: ha
+   gather_facts: false
+   tasks:
+   - name: install haproxy, keepalived, lsyncd
+     yum: name={{item}} state=present
+     with_items:
+     - haproxy
+     - keepalived
+     - lsyncd
+   - name: deploy lsyncd config
+     template: src=/home/woocash/ansible/templates/lsyncd.conf dest=/etc/lsyncd.conf
+   - name: deploy keepalived config
+     template: src=/home/woocash/ansible/templates/ha/keepalived.conf dest=/etc/keepalived/keepalived.conf
+   - name: start services
+     service: name={{item}} state=started
+     with_items:
+     - haproxy
+     - lsyncd
+     - keepalived
+   - name: allow nonlocal bind for haproxy VIP
+     sysctl: name="net.ipv4.ip_nonlocal_bind" value=1 sysctl_set=yes
