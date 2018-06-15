@@ -1,8 +1,27 @@
 ---
  - hosts: ap
    gather_facts: false
+   environment: 
+     http_proxy: http://192.168.0.4:3128 
+     ftp_proxy: http://192.168.0.4:3128
    tasks:
    - name: deploy jre package
-     copy: src=/home/woocash/ansible/pkg/jre-8u171-linux-x64.rpm dest=/opt/
+     copy: src=/home/woocash/ansible/pkgs/jre-8u171-linux-x64.rpm dest=/opt/
    - name: install jre package
      yum: name=/opt/jre-8u171-linux-x64.rpm state=installed
+   - name: download tomcat
+     get_url: url=http://ftp.ps.pl/pub/apache/tomcat/tomcat-8/v8.5.31/bin/apache-tomcat-8.5.31.tar.gz dest=/opt use_proxy=yes
+   - name: create tomcat dir
+     file: path=/opt/tomcat state=directory
+   - name: unpack tomcat
+     unarchive: src=/opt/apache-tomcat-8.5.31.tar.gz dest=/opt/tomcat remote_src=yes
+   - name: create link to latest tomcat
+     file: dest=/opt/tomcat/current src=/opt/tomcat/apache-tomcat-8.5.31 state=link
+   - name: crete catalina dir
+     file: dest=/opt/tomcat/current/conf/Catalina/localhost state=directory recurse=yes
+   - name: deploy manager.xml
+     template: src=/home/woocash/ansible/templates/ap/manager.xml dest=/opt/tomcat/current/conf/Catalina/localhost/manager.xml
+   - name: deploy tomcat-users.xml
+     template: src=/home/woocash/ansible/templates/ap/tomcat-users.xml dest=/opt/tomcat/current/conf/tomcat-users.xml
+   - name: deploy tomcat.service
+     template: src=/home/woocash/ansible/templates/ap/tomcat.service dest=/etc/systemd/system    
