@@ -1,8 +1,0 @@
----
- - hosts: tuz-test
-   gather_facts: no
-   tasks:
-   - include_vars: file=common_pkg.yml
-   - name: install essential packages
-     yum: name="{{ item }}" state=present
-     with_items: '{{ common }}'
